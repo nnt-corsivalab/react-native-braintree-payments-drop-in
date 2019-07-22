@@ -32,6 +32,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.braintreepayments.api:drop-in:3.+'
+    implementation 'com.braintreepayments.api:drop-in:3.7.1'
     implementation 'com.facebook.react:react-native:+'
 }

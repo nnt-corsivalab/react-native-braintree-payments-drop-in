@@ -24,6 +24,7 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
   private static final int DROP_IN_REQUEST = 0x444;
 
   private boolean isVerifyingThreeDSecure = false;
+  private boolean isDisablePayPal = true;
 
   public RNBraintreeDropInModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -46,6 +47,13 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
     }
 
     DropInRequest dropInRequest = new DropInRequest().clientToken(options.getString("clientToken"));
+
+    if (options.hasKey("disablePayPal")) {
+      isDisablePayPal = options.getBoolean("disablePayPal");
+    }
+    if (isDisablePayPal) {
+      dropInRequest.disablePayPal();
+    }
 
     if (options.hasKey("threeDSecure")) {
       final ReadableMap threeDSecureOptions = options.getMap("threeDSecure");
