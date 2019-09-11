@@ -31,7 +31,10 @@ repositories {
     google()
 }
 
+def DEFAULT_DROP_IN_VERSION = "3.7.1"
+def dropInVersion = rootProject.hasProperty('dropInVersion') ? rootProject.dropInVersion : DEFAULT_DROP_IN_VERSION
+
 dependencies {
-    implementation 'com.braintreepayments.api:drop-in:4.3.1'
+    implementation "com.braintreepayments.api:drop-in:$dropInVersion"
     implementation 'com.facebook.react:react-native:+'
 }
