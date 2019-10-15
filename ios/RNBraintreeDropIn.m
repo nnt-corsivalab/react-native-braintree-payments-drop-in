@@ -18,6 +18,11 @@ RCT_REMAP_METHOD(show,
     }
 
     BTDropInRequest *request = [[BTDropInRequest alloc] init];
+    if(options[@"disablePayPal"] == nil || [options[@"disablePayPal"] boolValue]) {
+        request.paypalDisabled = YES;
+    } else {
+        request.paypalDisabled = NO;
+    }
 
     NSDictionary* threeDSecureOptions = options[@"threeDSecure"];
     if (threeDSecureOptions) {
