@@ -31,10 +31,30 @@ repositories {
     google()
 }
 
-def DEFAULT_DROP_IN_VERSION = "3.7.1"
+def DEFAULT_DROP_IN_VERSION = "+"
 def dropInVersion = rootProject.hasProperty('dropInVersion') ? rootProject.dropInVersion : DEFAULT_DROP_IN_VERSION
 
 dependencies {
+    // Fix ' Dependency failing: com.nimbusds:nimbus-jose-jwt:5.1 -> net.minidev:json-smart@[1.3.1,2.3] ' 
+    // Google started using nimbus library dependencies in its play services with version 4.3.0 ('com.google.gms:google-services:4.3.0') 
+    // this is causing conflicts with anyone using nimbus library dependencies, google is using net.minidev:json-smart:1.3.1 
+    // where the latest version of nimbus library uses 2.3 this is causing conflict 
+    // when merchants integrating CardinalMobile SDK with required dependencies ( 'com.nimbusds', name: 'nimbus-jose-jwt', version: '7.0.1', 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.61'). 
+    // There are couple of ways to resolve this issue which are mentioned below.
+    components.all {
+        allVariants {
+            withDependencies { deps ->
+                deps.each { dep ->
+                    if (dep.group == 'net.minidev' && dep.name =='json-smart') {
+                        dep.version {
+                            prefer "2.3"
+                        }
+                        dep.because "resolving dependencies issue"
+                    }
+                }
+            }
+        }
+    }
     implementation "com.braintreepayments.api:drop-in:$dropInVersion"
     implementation 'com.facebook.react:react-native:+'
 }
